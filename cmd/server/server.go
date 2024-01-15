@@ -9,7 +9,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"fullcycle/graphql/graph"
-	"fullcycle/graphql/internal/database"
+	"fullcycle/graphql/internal/database"	
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -25,7 +25,7 @@ func main() {
 
 	defer db.Close()
 	categoryDb := database.NewCategory(db)
-
+	courseDb:= database.NewCourse(db)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -34,6 +34,7 @@ func main() {
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
 		CategoryDB: categoryDb,
+		CourseDB: courseDb,
 	}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
